@@ -1,0 +1,22 @@
+###############################################################################
+#
+# Copyright (C) 2017 C-SKY Microsystems Co. All rights reserved.
+#
+###############################################################################
+
+############################## YoC Libs ###########################
+CONFIG_LIBS=drivers libs yoc_kernel lpm netmgr cli at csi csiteeca boards_cb2201 tls
+
+#############################YoC Net Driver ###########################
+CONFIG_NET_DRIVER=enc28j60
+#CONFIG_NET_DRIVER=esp8266
+#CONFIG_NET_DRIVER=sim800c
+
+#############################YoC IoT ###########################
+CONFIG_IOT_LIBS=iot_alimqtt_tls
+
+################################### Misc #######################################
+CONFIG_CHIP_VENDOR=csky
+CONFIG_CHIP_NAME=ch2201
+CONFIG_BOARD_NAME=cb2201
+CONFIG_CPU_CK802=y
