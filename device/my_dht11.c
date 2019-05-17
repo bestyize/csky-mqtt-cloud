@@ -153,7 +153,7 @@ uint8_t my_dht11_init()
 	uint8_t i=0;
 	while(DHT11_Init())	//DHT11初始化	
 	{
-		if(i>20)
+		if(i>6)
 		{
 			break;
 		}
@@ -175,5 +175,5 @@ void get_temp_humi(char data[])
 		temperature=0;
 		humidity=0;
 	}
-	sprintf(data,"dht:status:temp %d humi %d",temperature,humidity);
+	sprintf(data,"dht:status:tmp %d hum %d",temperature,humidity);
 }

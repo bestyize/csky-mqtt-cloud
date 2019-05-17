@@ -642,7 +642,7 @@ Rhino: AliOS-Things Kernel
     </File>
   </VirtualDirectory>
   <MonitorProgress>
-    <DebugLaunch>221</DebugLaunch>
+    <DebugLaunch>215</DebugLaunch>
     <FlashOperate>207</FlashOperate>
   </MonitorProgress>
   <VirtualDirectory Name="device">
@@ -679,16 +679,16 @@ Rhino: AliOS-Things Kernel
     <File Name="device/my_vol.c">
       <FileOption/>
     </File>
-    <File Name="device/my_oled.c">
-      <FileOption/>
-    </File>
     <File Name="device/my_led.h">
       <FileOption/>
     </File>
-    <File Name="device/my_oled.h">
+    <File Name="device/oled/my_oled.c">
       <FileOption/>
     </File>
-    <File Name="device/my_oled_interface.c">
+    <File Name="device/oled/my_oled_interface.c">
+      <FileOption/>
+    </File>
+    <File Name="device/oled/my_oled.h">
       <FileOption/>
     </File>
   </VirtualDirectory>
@@ -698,16 +698,6 @@ Rhino: AliOS-Things Kernel
     </File>
   </VirtualDirectory>
   <Dependencies Name="BuildSet"/>
-  <DebugSessions>
-    <watchExpressions/>
-    <memoryExpressions>;;;</memoryExpressions>
-    <statistics>;;MHZ</statistics>
-    <peripheralTabs/>
-    <WatchDisplayFormat>0</WatchDisplayFormat>
-    <LocalDisplayFormat>0</LocalDisplayFormat>
-    <peripheralsDisFormat>Hex</peripheralsDisFormat>
-    <debugLayout/>
-  </DebugSessions>
   <BuildConfigs>
     <BuildConfig Name="BuildSet">
       <Target>
@@ -807,7 +797,7 @@ Rhino: AliOS-Things Kernel
         <Undefine>CONFIG_DISABLE_IRQ</Undefine>
         <Optim>Optimize size (-Os)</Optim>
         <DebugLevel>Maximum (-g3)</DebugLevel>
-        <IncludePath>$(ProjectPath);$(ProjectPath)/csi_core/include;$(ProjectPath)/csi_driver/include;$(ProjectPath)/libs/include;$(ProjectPath)/csi_driver/ch2201/include;$(ProjectPath)/board/cb2201/include;$(ProjectPath)/include;$(ProjectPath)/csi_kernel/include;$(ProjectPath)/csi_kernel/rhino/core/include;$(ProjectPath)/csi_kernel/rhino/arch/include;$(ProjectPath)/csi_kernel/rhino/pwrmgmt;$(ProjectPath)/csi_kernel/rhino/common;$(ProjectPath)/device;$(ProjectPath)/service</IncludePath>
+        <IncludePath>$(ProjectPath);$(ProjectPath)/csi_core/include;$(ProjectPath)/csi_driver/include;$(ProjectPath)/libs/include;$(ProjectPath)/csi_driver/ch2201/include;$(ProjectPath)/board/cb2201/include;$(ProjectPath)/include;$(ProjectPath)/csi_kernel/include;$(ProjectPath)/csi_kernel/rhino/core/include;$(ProjectPath)/csi_kernel/rhino/arch/include;$(ProjectPath)/csi_kernel/rhino/pwrmgmt;$(ProjectPath)/csi_kernel/rhino/common;$(ProjectPath)/device;$(ProjectPath)/service;$(ProjectPath)/service/oled;C:\Users\yize\Documents\CDK\iot\alios_version_3.0\device\oled</IncludePath>
         <OtherFlags>-ffunction-sections -fdata-sections -Wsizeof-array-argument</OtherFlags>
         <Verbose>no</Verbose>
         <Ansi>no</Ansi>
@@ -887,4 +877,14 @@ Rhino: AliOS-Things Kernel
       </Flash>
     </BuildConfig>
   </BuildConfigs>
+  <DebugSessions>
+    <watchExpressions/>
+    <memoryExpressions>;;;</memoryExpressions>
+    <statistics>;;MHZ</statistics>
+    <peripheralTabs/>
+    <WatchDisplayFormat>0</WatchDisplayFormat>
+    <LocalDisplayFormat>0</LocalDisplayFormat>
+    <peripheralsDisFormat>Hex</peripheralsDisFormat>
+    <debugLayout/>
+  </DebugSessions>
 </Project>

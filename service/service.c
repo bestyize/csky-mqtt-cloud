@@ -44,28 +44,37 @@ static void pwm_task(void);
 k_task_handle_t led_task_handle;
 static void led_task(void);
 
-/*
- * Author 		:yize
- * Date   		:2019-5-11
- * Function		:ESP电压任务相关参数
- * */
-#define VOL_TASK_PRIO   8
-#define VOL_TASK_STK_SIZE 512
-k_task_handle_t vol_task_handle;
-static void vol_task(void);
 
 /*
  * Author 		:yize
  * Date   		:2019-5-11
  * Function		:ESP电压任务相关参数
  * */
-#define DHT11_TASK_PRIO   9
+#define DHT11_TASK_PRIO   8
 #define DHT11_TASK_STK_SIZE 512
 k_task_handle_t dht11_task_handle;
 static void dht11_task(void);
 
 
+/*
+ * Author 		:yize
+ * Date   		:2019-5-11
+ * Function		:OLED显示任务，每隔500ms刷新一次
+ * */
+#define DISPLAY_TASK_PRIO   9
+#define DISPLAY_TASK_STK_SIZE 512
+k_task_handle_t display_task_handle;
+static void display_task(void);
 
+
+
+
+static char* get_message(char* cmd,char *dst)
+{
+	int i = strlen(dst)-1;
+	char* temp = (char*)(cmd + i);
+	return temp;
+}
 
 
 /*
@@ -79,8 +88,8 @@ void services_init(void)
     csi_kernel_task_new((k_task_entry_t)pwm_task, "pwm_task",0, PWM_TASK_PRIO, 0, 0, PWM_TASK_STK_SIZE, &pwm_task_handle);
 	csi_kernel_task_new((k_task_entry_t)led_task, "led_task",0, LED_TASK_PRIO, 0, 0, LED_TASK_STK_SIZE, &led_task_handle);
     csi_kernel_task_new((k_task_entry_t)esp_receive_task, "esp_receive_task",0, ESP_RECEIVE_TASK_PRIO, 0, 0, ESP_RECEIVE_TASK_STK_SIZE, &esp_receive_task_handle);
-    csi_kernel_task_new((k_task_entry_t)vol_task, "vol_task",0, VOL_TASK_PRIO, 0, 0, VOL_TASK_STK_SIZE, &vol_task_handle);
 	csi_kernel_task_new((k_task_entry_t)dht11_task, "dht11_task",0, DHT11_TASK_PRIO, 0, 0, DHT11_TASK_STK_SIZE, &dht11_task_handle);
+	csi_kernel_task_new((k_task_entry_t)display_task, "display_task",0, DISPLAY_TASK_PRIO, 0, 0, DISPLAY_TASK_STK_SIZE, &display_task_handle);
 	csi_kernel_start();
 }
 
@@ -101,7 +110,9 @@ static void pwm_task(void)
 			memset(buf,0,sizeof(buf));
 			sprintf(buf,"duty:%d",pwm_receive.duty);
 			esp_usart_send_str(buf);
-			my_oled_show_str(0,LINE3,buf);
+			memset(oled_display.oled_display_params[2].buf,0,OLED_BUF_LEN);
+			strcpy(oled_display.oled_display_params[2].buf,buf);
+			oled_display.oled_display_params[2].new_value=true;
 		}
 		delay_ms(200);		
 	}	
@@ -117,26 +128,29 @@ static void led_task(void)
 {
 	char buf[40]={0};
 	sprintf(buf,"led:status:led now is off");
-	my_oled_show_str(0,LINE1,buf);
+	memset(oled_display.oled_display_params[1].buf,0,OLED_BUF_LEN);
+	strcpy(oled_display.oled_display_params[1].buf,"led:off");
+	oled_display.oled_display_params[1].new_value=true;
 	while(1)
 	{
 		if(led_receive.new_value==true)
 		{
 			led_switch(LED3,led_receive.status);
-			
-			
 			memset(buf,0,40);
+			memset(oled_display.oled_display_params[1].buf,0,OLED_BUF_LEN);
 			if(led_receive.status==true)
 			{
 				sprintf(buf,"led:status:led now is off");
+				strcpy(oled_display.oled_display_params[1].buf,"led:off");
 			}else{
 				sprintf(buf,"led:status:led now is  on");
+				strcpy(oled_display.oled_display_params[1].buf,"led: on");
 			}
 			esp_usart_send_str(buf);
 			led_receive.new_value=false;
-			my_oled_show_str(0,LINE1,buf);
+			oled_display.oled_display_params[1].new_value=true;
 		}
-		delay_ms(40);
+		delay_ms(100);
 	}
 }
 
@@ -154,23 +168,6 @@ static void esp_receive_task(void)
 	}
 }
 
-/*
- * Author 		:yize
- * Date   		:2019-5-11
- * Function		:电压表（ADC任务）
- * */
-static void vol_task(void)
-{
-	char temp[40] = {0};
-	while(1)
-	{
-		//Todo
-		get_vol_value(temp);
-		esp_usart_send_line(temp);
-		my_oled_show_str(0,LINE2,temp);
-		delay_ms(2000);	
-	}
-}
 
 /*
  * Author 		:yize
@@ -184,7 +181,31 @@ static void dht11_task(void)
 	{
 		get_temp_humi(temp);
 		esp_usart_send_str(temp);
-		my_oled_show_str(0,LINE3,temp);
+//		my_oled_show_str(0,32,"temp");
+		memset(oled_display.oled_display_params[0].buf,0,OLED_BUF_LEN);
+		char *message=get_message(temp,"dht:status:t");
+		strcpy(oled_display.oled_display_params[0].buf,message);
+		oled_display.oled_display_params[0].new_value=true;
 		delay_ms(2000);	
+	}
+}
+
+
+void display_task(void)
+{
+	while(1)
+	{
+		int i=0,line;
+		for(i=0;i<8;i++)
+		{
+			if(oled_display.oled_display_params[i].new_value==true)
+			{
+				line=oled_display.oled_display_params[i].line;
+				my_oled_show_str(line,i,(uint8_t*)oled_display.oled_display_params[i].buf);
+				memset(oled_display.oled_display_params[i].buf,0,OLED_BUF_LEN);
+				oled_display.oled_display_params[i].new_value=false;
+			}
+		}	
+		delay_ms(500);	
 	}
 }
