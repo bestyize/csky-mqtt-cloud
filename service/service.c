@@ -77,6 +77,12 @@ static char* get_message(char* cmd,char *dst)
 }
 
 
+#define DHT11_LINE 0X0
+#define PWM_LINE 0X2
+#define LED_LINE 0X4
+#define LOGO_LINE 0X6
+
+
 /*
  * Author 		:yize
  * Date   		:2019-5-3
@@ -110,9 +116,9 @@ static void pwm_task(void)
 			memset(buf,0,sizeof(buf));
 			sprintf(buf,"duty:%d",pwm_receive.duty);
 			esp_usart_send_str(buf);
-			memset(oled_display.oled_display_params[2].buf,0,OLED_BUF_LEN);
-			strcpy(oled_display.oled_display_params[2].buf,buf);
-			oled_display.oled_display_params[2].new_value=true;
+			memset(oled_display.oled_display_params[PWM_LINE].buf,0,OLED_BUF_LEN);
+			strcpy(oled_display.oled_display_params[PWM_LINE].buf,buf);
+			oled_display.oled_display_params[PWM_LINE].new_value=true;
 		}
 		delay_ms(200);		
 	}	
@@ -127,28 +133,24 @@ static void pwm_task(void)
 static void led_task(void)
 {
 	char buf[40]={0};
-	sprintf(buf,"led:status:led now is off");
-	memset(oled_display.oled_display_params[1].buf,0,OLED_BUF_LEN);
-	strcpy(oled_display.oled_display_params[1].buf,"led:off");
-	oled_display.oled_display_params[1].new_value=true;
 	while(1)
 	{
 		if(led_receive.new_value==true)
 		{
 			led_switch(LED3,led_receive.status);
 			memset(buf,0,40);
-			memset(oled_display.oled_display_params[1].buf,0,OLED_BUF_LEN);
+			memset(oled_display.oled_display_params[LED_LINE].buf,0,OLED_BUF_LEN);
 			if(led_receive.status==true)
 			{
 				sprintf(buf,"led:status:led now is off");
-				strcpy(oled_display.oled_display_params[1].buf,"led:off");
+				strcpy(oled_display.oled_display_params[LED_LINE].buf,"led:off");
 			}else{
 				sprintf(buf,"led:status:led now is  on");
-				strcpy(oled_display.oled_display_params[1].buf,"led: on");
+				strcpy(oled_display.oled_display_params[LED_LINE].buf,"led: on");
 			}
 			esp_usart_send_str(buf);
 			led_receive.new_value=false;
-			oled_display.oled_display_params[1].new_value=true;
+			oled_display.oled_display_params[LED_LINE].new_value=true;
 		}
 		delay_ms(100);
 	}
@@ -182,15 +184,19 @@ static void dht11_task(void)
 		get_temp_humi(temp);
 		esp_usart_send_str(temp);
 //		my_oled_show_str(0,32,"temp");
-		memset(oled_display.oled_display_params[0].buf,0,OLED_BUF_LEN);
+		memset(oled_display.oled_display_params[DHT11_LINE].buf,0,OLED_BUF_LEN);
 		char *message=get_message(temp,"dht:status:t");
-		strcpy(oled_display.oled_display_params[0].buf,message);
-		oled_display.oled_display_params[0].new_value=true;
+		strcpy(oled_display.oled_display_params[DHT11_LINE].buf,message);
+		oled_display.oled_display_params[DHT11_LINE].new_value=true;
 		delay_ms(2000);	
 	}
 }
 
-
+/*
+ * Author 		:yize
+ * Date   		:2019-5-19
+ * Function		:OLED12864显示任务
+ * */
 void display_task(void)
 {
 	while(1)
@@ -200,10 +206,27 @@ void display_task(void)
 		{
 			if(oled_display.oled_display_params[i].new_value==true)
 			{
-				line=oled_display.oled_display_params[i].line;
-				my_oled_show_str(line,i,(uint8_t*)oled_display.oled_display_params[i].buf);
-				memset(oled_display.oled_display_params[i].buf,0,OLED_BUF_LEN);
+				if(i==DHT11_LINE)
+				{
+					OLED_ShowNum(32,DHT11_LINE,temperature_value,2,16);//温度
+					OLED_ShowNum(96,DHT11_LINE,humidity_value,2,16);//湿度
+					
+				}else if(i==PWM_LINE)
+				{
+					OLED_ShowNum(56,PWM_LINE,pwm_receive.duty,2,16);//占空比
+				}else if(i==LED_LINE)
+				{
+					if(strstr(oled_display.oled_display_params[i].buf,"on")!=NULL)
+					{
+						OLED_ShowCHinese(40,LED_LINE,20);//灯光开
+					}else if(strstr(oled_display.oled_display_params[i].buf,"off")!=NULL)
+					{
+						OLED_ShowCHinese(40,LED_LINE,21);//灯光关
+					}
+					
+				}
 				oled_display.oled_display_params[i].new_value=false;
+				
 			}
 		}	
 		delay_ms(500);	

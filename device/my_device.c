@@ -15,7 +15,7 @@ void device_init(void)
 	esp_usart_init(ESP_USART_INDEX);
 	my_dht11_init();
 	my_oled_init();
-	my_oled_show_str(0,6,(uint8_t*)"c-sky by yize");
+	
 	
 	
 }

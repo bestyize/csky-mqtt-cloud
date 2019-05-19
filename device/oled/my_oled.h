@@ -43,6 +43,7 @@ void IIC_Wait_Ack();
 
 void my_oled_init();
 void my_oled_show_str(uint8_t x, uint8_t y, uint8_t *str);
+void my_oled_init_test(void);
 
 #define OLED_BUF_LEN 14
 

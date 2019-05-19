@@ -642,7 +642,7 @@ Rhino: AliOS-Things Kernel
     </File>
   </VirtualDirectory>
   <MonitorProgress>
-    <DebugLaunch>215</DebugLaunch>
+    <DebugLaunch>221</DebugLaunch>
     <FlashOperate>207</FlashOperate>
   </MonitorProgress>
   <VirtualDirectory Name="device">

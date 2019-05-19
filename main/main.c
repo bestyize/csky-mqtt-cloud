@@ -1,13 +1,12 @@
 /**
  * 
  * Author 		:yize
- * Date   		:2019-5-15
+ * Date   		:2019-5-19
  * Function		:中天微课设
  * 
- * 引脚说明：OLED240X240引脚     SCL:PA4 SDA:PA5
+ * 引脚说明：OLED12864引脚       SCL:PA4 SDA:PA5
  * 			 DHT11引脚   		 OUT:PA8
  *           ESP8266             RX:PA10 TX:PA11
- *           ADC                 PA16  没调出来
  * 			 PWM                 PA13
  * 			 LED                 PA15
  * */

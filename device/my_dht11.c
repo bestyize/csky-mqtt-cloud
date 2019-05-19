@@ -8,6 +8,8 @@
 #  define NULL ((void *)0)
 #endif
 
+uint8_t temperature_value=10;
+uint8_t humidity_value=10;
 /**
  * DHT11的数据引脚
  * */
@@ -175,5 +177,7 @@ void get_temp_humi(char data[])
 		temperature=0;
 		humidity=0;
 	}
+	temperature_value=temperature;
+	humidity_value=humidity;
 	sprintf(data,"dht:status:tmp %d hum %d",temperature,humidity);
 }

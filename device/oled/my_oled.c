@@ -346,11 +346,50 @@ void my_oled_init(void)
 	OLED_Init(); 
 	OLED_Clear();
 	oled_display_init();
+	my_oled_init_test();
 }
 
 
 void my_oled_show_str(uint8_t x, uint8_t y, uint8_t *str)
 {
-	OLED_ShowString(x,y,str,8);
+	OLED_ShowString(x,y,str,16);
 }
+
+void my_oled_init_test(void)
+{
+	//温度
+	OLED_ShowCHinese(0,0,9);
+	OLED_ShowCHinese(16,0,10);
+	OLED_ShowNum(32,0,27,2,16);
+	OLED_ShowCHinese(48,0,22);
+	OLED_ShowChar(56,0,'C',16);
+	
+	//湿度
+	OLED_ShowCHinese(64,0,11);
+	OLED_ShowCHinese(80,0,12);
+	OLED_ShowNum(96,0,69,2,16);
+	OLED_ShowChar(112,0,'%',16);
+	
+	//占空比
+	OLED_ShowCHinese(0,2,13);
+	OLED_ShowCHinese(16,2,14);
+	OLED_ShowCHinese(32,2,15);
+	OLED_ShowChar(48,2,':',16);
+	OLED_ShowNum(56,2,50,2,16);
+	OLED_ShowChar(72,2,'%',16);
+	
+	//灯光
+	OLED_ShowCHinese(0,4,16);
+	OLED_ShowCHinese(16,4,17);
+	OLED_ShowChar(32,4,':',16);
+	OLED_ShowCHinese(40,4,20);
+	
+	//智慧在家
+	OLED_ShowCHinese(64,6,23);
+	OLED_ShowCHinese(80,6,24);
+	OLED_ShowCHinese(96,6,25);
+	OLED_ShowCHinese(112,6,26);
+}
+
+
 
