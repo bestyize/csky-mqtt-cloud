@@ -9,7 +9,8 @@
  *           ESP8266             RX:PA10 TX:PA11
  * 			 PWM                 PA13
  * 			 LED                 PA15
- * */
+ * 			 BMP280              SCL:PA16 SDA:PA17 /后来加的驱动，不是课设的/
+ */
 
 #include <stdint.h>
 #include <stdio.h>

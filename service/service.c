@@ -201,7 +201,7 @@ void display_task(void)
 {
 	while(1)
 	{
-		int i=0,line;
+		int i=0;
 		for(i=0;i<8;i++)
 		{
 			if(oled_display.oled_display_params[i].new_value==true)

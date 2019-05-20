@@ -691,6 +691,16 @@ Rhino: AliOS-Things Kernel
     <File Name="device/oled/my_oled.h">
       <FileOption/>
     </File>
+    <File Name="device/bmp280/bmp280.c">
+      <FileOption/>
+    </File>
+    <File Name="device/bmp280/bmp280.h">
+      <FileOption/>
+    </File>
+    <File Name="device/bmp280/bmp280_interface.c">
+      <FileOption/>
+    </File>
+    <File Name="device/bmp280/bmp280_interface.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="service">
     <File Name="service/service.c">

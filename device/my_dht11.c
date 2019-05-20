@@ -149,7 +149,11 @@ static uint8_t DHT11_Init()
 }
 
 
-
+/*
+ * Author 		:yize
+ * Date   		:
+ * Function		:DHT11初始化
+ * */
 uint8_t my_dht11_init()
 {
 	uint8_t i=0;
