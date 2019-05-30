@@ -807,7 +807,7 @@ Rhino: AliOS-Things Kernel
         <Undefine>CONFIG_DISABLE_IRQ</Undefine>
         <Optim>Optimize size (-Os)</Optim>
         <DebugLevel>Maximum (-g3)</DebugLevel>
-        <IncludePath>$(ProjectPath);$(ProjectPath)/csi_core/include;$(ProjectPath)/csi_driver/include;$(ProjectPath)/libs/include;$(ProjectPath)/csi_driver/ch2201/include;$(ProjectPath)/board/cb2201/include;$(ProjectPath)/include;$(ProjectPath)/csi_kernel/include;$(ProjectPath)/csi_kernel/rhino/core/include;$(ProjectPath)/csi_kernel/rhino/arch/include;$(ProjectPath)/csi_kernel/rhino/pwrmgmt;$(ProjectPath)/csi_kernel/rhino/common;$(ProjectPath)/device;$(ProjectPath)/service;$(ProjectPath)/service/oled;C:\Users\yize\Documents\CDK\iot\alios_version_3.0\device\oled</IncludePath>
+        <IncludePath>$(ProjectPath);$(ProjectPath)/csi_core/include;$(ProjectPath)/csi_driver/include;$(ProjectPath)/libs/include;$(ProjectPath)/csi_driver/ch2201/include;$(ProjectPath)/board/cb2201/include;$(ProjectPath)/include;$(ProjectPath)/csi_kernel/include;$(ProjectPath)/csi_kernel/rhino/core/include;$(ProjectPath)/csi_kernel/rhino/arch/include;$(ProjectPath)/csi_kernel/rhino/pwrmgmt;$(ProjectPath)/csi_kernel/rhino/common;$(ProjectPath)/device;$(ProjectPath)/service;$(ProjectPath)/service/oled;$(ProjectPath)/device/oled;$(ProjectPath)/device/finger</IncludePath>
         <OtherFlags>-ffunction-sections -fdata-sections -Wsizeof-array-argument</OtherFlags>
         <Verbose>no</Verbose>
         <Ansi>no</Ansi>
